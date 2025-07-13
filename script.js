@@ -5,6 +5,17 @@ form.addEventListener('submit', (event) => {
     console.log('submitted');
 });
 
+function processInputs(input, inputError, displayInputError) {
+    input.addEventListener('input', () => {
+        if (input.validity.valid) {
+            inputError.textContent = '';
+            inputError.className = 'error';
+        } else {
+            displayInputError();
+        }
+    });
+}
+
 //EMAIL HANDLING
 
 const email = document.querySelector('#email');
@@ -31,6 +42,7 @@ const postalCode = document.querySelector('#postal-code');
 const postalCodeError = document.querySelector('#postal-code + span.error');
 
 let selectedCountry = '';
+let validPostCode = false;
 
 countrySelector.addEventListener('input', () => {
     selectedCountry = countrySelector.value;
@@ -43,13 +55,13 @@ function changePattern(country) {
     }
 }
 
-processInputs(postalCode, postalCodeError, displayPostalError);
 
 function displayPostalError() {
     if (postalCode.validity.valueMissing) {
         postalCodeError.textContent = 'This field cannot be empty';
-    } else if (postalCode.validity.tooLong) {
-        postalCodeError.textContent = 'Too long';
+    } else if (!validPostCode) {
+        console.log('invalid postcode !');
+        postalCodeError.textContent = 'invalid postcode !';
     } else if (postalCode.validity.patternMismatch) {
         postalCodeError.textContent = 'Not the right pattern';
     }
@@ -57,15 +69,24 @@ function displayPostalError() {
     postalCodeError.className = 'error active';
 }
 
-function processInputs(input, inputError, displayInputError) {
-    input.addEventListener('input', () => {
-        console.log(input.validity.rangeOverflow);
-        if (input.validity.valid) {
-            inputError.textContent = '';
-            inputError.className = 'error';
-        } else {
-            console.log('error');
-            displayInputError();
-        }
-    });
+//REGEX TESTING
+
+function validatePostcode(postcode) {
+    var Reg = new RegExp(/^(?:0[1-9]|[1-8]\d|9[0-8])\d{3}$/i);
+    return Reg.test(postcode);
 }
+
+postalCode.addEventListener('input', () => {
+    if (validatePostcode(postalCode.value)) {
+        validPostCode = true;
+        if (postalCode.validity.valid) {
+            postalCodeError.textContent = '';
+            postalCodeError.className = 'error';
+        } else {
+            displayPostalError();
+        }
+    } else {
+        validPostCode = false;
+        displayPostalError();
+    }
+});
