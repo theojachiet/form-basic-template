@@ -5,17 +5,12 @@ form.addEventListener('submit', (event) => {
     console.log('submitted');
 });
 
+//EMAIL HANDLING
+
 const email = document.querySelector('#email');
 const emailError = document.querySelector('#email + span.error');
 
-email.addEventListener('input', () => {
-    if (email.validity.valid) {
-        emailError.textContent = '';
-        emailError.className = 'error';
-    } else {
-        displayMailError();
-    }
-});
+processInputs(email, emailError, displayMailError);
 
 function displayMailError() {
     if (email.validity.valueMissing) {
@@ -27,4 +22,50 @@ function displayMailError() {
     }
 
     emailError.className = 'error active';
+}
+
+//POSTAL CODE and COUNTRY HANDLING
+
+const countrySelector = document.querySelector('#country');
+const postalCode = document.querySelector('#postal-code');
+const postalCodeError = document.querySelector('#postal-code + span.error');
+
+let selectedCountry = '';
+
+countrySelector.addEventListener('input', () => {
+    selectedCountry = countrySelector.value;
+    changePattern(selectedCountry);
+});
+
+function changePattern(country) {
+    if (country = 'France') {
+        postalCode.max = 99999;
+    }
+}
+
+processInputs(postalCode, postalCodeError, displayPostalError);
+
+function displayPostalError() {
+    if (postalCode.validity.valueMissing) {
+        postalCodeError.textContent = 'This field cannot be empty';
+    } else if (postalCode.validity.tooLong) {
+        postalCodeError.textContent = 'Too long';
+    } else if (postalCode.validity.patternMismatch) {
+        postalCodeError.textContent = 'Not the right pattern';
+    }
+
+    postalCodeError.className = 'error active';
+}
+
+function processInputs(input, inputError, displayInputError) {
+    input.addEventListener('input', () => {
+        console.log(input.validity.rangeOverflow);
+        if (input.validity.valid) {
+            inputError.textContent = '';
+            inputError.className = 'error';
+        } else {
+            console.log('error');
+            displayInputError();
+        }
+    });
 }
