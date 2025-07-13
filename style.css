@@ -1,51 +1,87 @@
 body {
-    box-sizing: border-box;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color:rgb(20, 20, 30);
-    color: #ccc;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 1.2rem;
+  box-sizing: border-box;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(20, 20, 30);
+  color: #ccc;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1.2rem;
 }
 
 .form-container {
-    display: flex;
-    width: fit-content;
-    padding: 60px;
-    background-color: rgb(25, 20, 25);
-    border-radius: 10px;
-    box-shadow: 0px 0px 30px 5px #222;
+  display: flex;
+  width: fit-content;
+  padding: 60px;
+  background-color: rgb(25, 20, 25);
+  border-radius: 10px;
+  box-shadow: 0px 0px 30px 5px #222;
+}
+
+form {
+  width: 500px;
 }
 
 label {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 15px;
 }
 
-input, select {
-    appearance: none;
-    border: none;
-    border-radius: 5px;
-    font-size: 0.9em;
-    padding: 8px;
-    max-width: 100%;
-    background-color: #ddd;
+input {
+  appearance: none;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.9em;
+  padding: 8px;
+  max-width: 100%;
+  background-color: #ddd;
+}
+
+select {
+  border: none;
+  border-radius: 5px;
+  font-size: 0.9em;
+  padding: 8px;
+  max-width: 100%;
+  background-color: #ddd;
+}
+
+span {
+  max-width: 98.5%;
 }
 
 button {
-    display: block;
-    margin: auto;
-    appearance: none;
-    padding: 15px 30px;
-    border: none;
-    border-radius: 8px;
-    margin-top: 30px;
-    color: #ddd;
-    font-weight: bold;
-    font-size: 0.8em;
-    background-color: green;
+  display: block;
+  margin: auto;
+  appearance: none;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 8px;
+  margin-top: 30px;
+  color: #ddd;
+  font-weight: bold;
+  font-size: 0.8em;
+  background-color: green;
+}
+
+/* ERROR HANDLING  */
+
+.error {
+  opacity: 0;
+  padding: 0.5em;
+}
+
+.error.active {
+  display: inline;
+  width: 100%;
+  padding: 0.3em;
+  opacity: 1;
+
+  font-size: 80%;
+  color: white;
+  background-color: #ff7e67;
+  border-radius: 5px;
 }
