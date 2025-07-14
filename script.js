@@ -1,27 +1,22 @@
 const form = document.querySelector('form');
 
-form.addEventListener('submit', (event) => {
-    event.preventDefault();
-    console.log('submitted');
-});
-
-function processInputs(input, inputError, displayInputError) {
-    input.addEventListener('input', () => {
-        if (input.validity.valid) {
-            inputError.textContent = '';
-            inputError.className = 'error';
-        } else {
-            displayInputError();
-        }
-    });
-}
-
 //EMAIL HANDLING
 
 const email = document.querySelector('#email');
 const emailError = document.querySelector('#email + span.error');
 
-processInputs(email, emailError, displayMailError);
+email.addEventListener('input', checkEmailValidity);
+
+function checkEmailValidity() {
+    if (email.validity.valid) {
+        emailError.textContent = '';
+        emailError.className = 'error';
+        return true;
+    } else {
+        displayMailError();
+        return false;
+    }
+}
 
 function displayMailError() {
     if (email.validity.valueMissing) {
@@ -34,6 +29,7 @@ function displayMailError() {
 
     emailError.className = 'error active';
 }
+
 
 //POSTAL CODE and COUNTRY HANDLING
 
@@ -86,21 +82,25 @@ function validatePostcode(postcode) {
     }
 }
 
-postalCode.addEventListener('input', () => {
-    console.log();
+postalCode.addEventListener('input', checkPostalCodeValidity);
+
+function checkPostalCodeValidity() {
     if (validatePostcode(postalCode.value)) {
         validPostCode = true;
         if (postalCode.validity.valid) {
             postalCodeError.textContent = '';
             postalCodeError.className = 'error';
+            return true;
         } else {
             displayPostalError();
+            return false;
         }
     } else {
         validPostCode = false;
         displayPostalError();
+        return false;
     }
-});
+}
 
 //PASSWORD HANDLING
 const password = document.querySelector('#password');
@@ -108,14 +108,18 @@ const passwordError = document.querySelector('#password + span.error');
 const confirmPassword = document.querySelector('#confirm-password');
 const confirmPasswordError = document.querySelector('#confirm-password + span.error');
 
-password.addEventListener('input', () => {
+password.addEventListener('input', checkPasswordValidity);
+
+function checkPasswordValidity() {
     if (password.validity.valid) {
         passwordError.textContent = '';
         passwordError.className = 'error';
+        return true;
     } else {
         displayPasswordError();
+        return false;
     }
-});
+}
 
 function displayPasswordError() {
     if (password.validity.valueMissing) {
@@ -127,20 +131,24 @@ function displayPasswordError() {
     passwordError.className = 'error active';
 }
 
-confirmPassword.addEventListener('input', () => {
-    console.log(confirmPassword.value + ' : ' + password.value);
+confirmPassword.addEventListener('input', checkConfirmPasswordValidity);
+
+function checkConfirmPasswordValidity() {
     if (confirmPassword.validity.valid) {
         if (confirmPassword.value !== password.value) {
             confirmPasswordError.className = 'error active';
             confirmPasswordError.textContent = 'This is not the same password !';
+            return false;
         } else {
             confirmPasswordError.textContent = '';
             confirmPasswordError.className = 'error';
+            return true;
         }
     } else {
         displayConfirmPasswordError();
+        return false;
     }
-});
+}
 
 function displayConfirmPasswordError() {
     if (confirmPassword.validity.valueMissing) {
@@ -151,3 +159,18 @@ function displayConfirmPasswordError() {
 
     confirmPasswordError.className = 'error active';
 }
+
+//FORM VALIDATION
+form.addEventListener('submit', (event) => {
+    if (checkEmailValidity()
+        && checkPostalCodeValidity()
+        && checkPasswordValidity()
+        && checkConfirmPasswordValidity()
+    ) {
+        event.preventDefault();
+        console.log(`Hello ${email.value} ! From ${selectedCountry}, ${postalCode.value}. Your password seems to be valid`);
+    } else {
+        event.preventDefault();
+        console.log('not submitted')
+    }
+});
