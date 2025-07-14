@@ -50,8 +50,13 @@ countrySelector.addEventListener('input', () => {
 });
 
 function changePattern(country) {
-    if (country = 'France') {
-        postalCode.max = 99999;
+    console.log(country);
+    if (country === 'France') {
+        postalCode.setAttribute('placeholder', '31820');
+    } else if (country === 'Italy') {
+        postalCode.setAttribute('placeholder', '56321');
+    } else if (country === 'Swisss') {
+        postalCode.setAttribute('placeholder', '2222');
     }
 }
 
@@ -60,10 +65,7 @@ function displayPostalError() {
     if (postalCode.validity.valueMissing) {
         postalCodeError.textContent = 'This field cannot be empty';
     } else if (!validPostCode) {
-        console.log('invalid postcode !');
         postalCodeError.textContent = 'invalid postcode !';
-    } else if (postalCode.validity.patternMismatch) {
-        postalCodeError.textContent = 'Not the right pattern';
     }
 
     postalCodeError.className = 'error active';
@@ -72,11 +74,20 @@ function displayPostalError() {
 //REGEX TESTING
 
 function validatePostcode(postcode) {
-    var Reg = new RegExp(/^(?:0[1-9]|[1-8]\d|9[0-8])\d{3}$/i);
-    return Reg.test(postcode);
+    if (selectedCountry === 'France') {
+        let Reg = new RegExp(/^(?:0[1-9]|[1-8]\d|9[0-8])\d{3}$/i);
+        return Reg.test(postcode);
+    } else if (selectedCountry === 'Italy') {
+        let Reg = new RegExp(/^\d{5}$/);
+        return Reg.test(postcode);
+    } else if (selectedCountry === 'Swiss') {
+        let Reg = new RegExp(/^[1-9]\d{3}$/);
+        return Reg.test(postcode);
+    }
 }
 
 postalCode.addEventListener('input', () => {
+    console.log();
     if (validatePostcode(postalCode.value)) {
         validPostCode = true;
         if (postalCode.validity.valid) {
@@ -90,3 +101,5 @@ postalCode.addEventListener('input', () => {
         displayPostalError();
     }
 });
+
+//PASSWORD HANDLING
