@@ -103,3 +103,51 @@ postalCode.addEventListener('input', () => {
 });
 
 //PASSWORD HANDLING
+const password = document.querySelector('#password');
+const passwordError = document.querySelector('#password + span.error');
+const confirmPassword = document.querySelector('#confirm-password');
+const confirmPasswordError = document.querySelector('#confirm-password + span.error');
+
+password.addEventListener('input', () => {
+    if (password.validity.valid) {
+        passwordError.textContent = '';
+        passwordError.className = 'error';
+    } else {
+        displayPasswordError();
+    }
+});
+
+function displayPasswordError() {
+    if (password.validity.valueMissing) {
+        passwordError.textContent = 'This field cannot be empty';
+    } else if (password.validity.tooShort) {
+        passwordError.textContent = 'Password must be 8 characters long minimum'
+    }
+
+    passwordError.className = 'error active';
+}
+
+confirmPassword.addEventListener('input', () => {
+    console.log(confirmPassword.value + ' : ' + password.value);
+    if (confirmPassword.validity.valid) {
+        if (confirmPassword.value !== password.value) {
+            confirmPasswordError.className = 'error active';
+            confirmPasswordError.textContent = 'This is not the same password !';
+        } else {
+            confirmPasswordError.textContent = '';
+            confirmPasswordError.className = 'error';
+        }
+    } else {
+        displayConfirmPasswordError();
+    }
+});
+
+function displayConfirmPasswordError() {
+    if (confirmPassword.validity.valueMissing) {
+        confirmPasswordError.textContent = 'Please Confirm your password here ! ';
+    } else if (confirmPassword.validity.tooShort) {
+        confirmPasswordError.textContent = 'This must be 8 characters minimum';
+    }
+
+    confirmPasswordError.className = 'error active';
+}
